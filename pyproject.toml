@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agxcl-sdk"
+version = "1.0.0"
+description = "Official Python SDK for AGXCL smart contracts on AgeFix blockchain"
+readme = "README.md"
+authors = [
+    {name = "AgeFix Team", email = "dev@agefix.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["blockchain", "agxcl", "agefix", "smart-contracts", "healthcare", "web3"]
+dependencies = [
+    "requests>=2.31.0",
+    "eth-account>=0.10.0",
+    "web3>=6.11.0",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://agefix.com"
+Documentation = "https://agefix.com/developers"
+Repository = "https://github.com/agefix/agxcl-sdk-python"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "mypy>=1.5.0",
+]
+docs = [
+    "sphinx>=7.2.6",
+    "sphinx-rtd-theme>=2.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agxcl_sdk*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true

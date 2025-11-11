@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+recursive-include agxcl_sdk *.py
+recursive-include docs *.rst *.py Makefile
+prune docs/_build
+prune tests
+prune examples
+global-exclude *.pyc __pycache__
