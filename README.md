@@ -119,40 +119,148 @@ owner = nft.owner_of(token_id)
 
 ## Examples
 
-### Deploy Custom Contract
+The `examples/` directory contains comprehensive code examples for all AgeFix protocol interactions:
 
-```python
-contract_code = """
-contract SimpleStorage {
-  state {
-    uint256 value;
-  }
+### 📁 Available Example Files
 
-  function setValue(uint256 newValue) public {
-    value = newValue;
-  }
+- **[defi_examples.py](examples/defi_examples.py)** - DeFi Protocol Examples
+  - Liquidity pool creation and management
+  - Token swaps with slippage protection
+  - Lending and borrowing with collateral
+  - Yield farming and staking
+  - Portfolio analytics and TVL statistics
 
-  function getValue() public view returns (uint256) {
-    return value;
-  }
-}
-"""
+- **[gaming_examples.py](examples/gaming_examples.py)** - Gaming Protocol Examples
+  - Game registration and session management
+  - Tournament creation and participation
+  - Achievement unlocking and tracking
+  - Player statistics and leaderboards
 
-deployment = client.deploy_contract(contract_code)
-client.execute_transaction(deployment.contract_address, "setValue", [42])
-result = client.query_contract(deployment.contract_address, "getValue", [])
-print(f"Stored value: {result.data}")
+- **[nft_examples.py](examples/nft_examples.py)** - NFT Marketplace Examples
+  - NFT minting with metadata and IPFS
+  - Listing and buying NFTs
+  - Auction creation and bidding
+  - NFT discovery and collection management
+
+- **[governance_examples.py](examples/governance_examples.py)** - Governance Protocol Examples
+  - Proposal creation and voting
+  - Gauge weight voting for reward distribution
+  - Validator bribes and incentives
+  - Governance statistics and history
+
+### 🚀 Running Examples
+
+Each example file can be run directly or imported into your project:
+
+```bash
+# Install dependencies
+pip install agxcl-sdk
+
+# Set environment variables
+export AGEFIX_API_KEY="your_api_key"
+export WALLET_ADDRESS="your_wallet_address"
+export PRIVATE_KEY="your_private_key"
+
+# Run a specific example
+python examples/defi_examples.py
+python examples/gaming_examples.py
+python examples/nft_examples.py
+python examples/governance_examples.py
 ```
 
-### Check Transaction Status
+### 📖 Using Examples in Your Code
+
+Import individual functions from example files:
 
 ```python
-tx = token.transfer(recipient_address, "100")
-receipt = client.get_transaction_receipt(tx.tx_hash)
-print(f"Transaction status: {receipt['status']}")
-print(f"Block number: {receipt['blockNumber']}")
-print(f"Gas used: {receipt['gasUsed']}")
+from examples.defi_examples import (
+    create_liquidity_pool,
+    swap_tokens,
+    complete_defi_workflow
+)
+import asyncio
+
+async def main():
+    # Create a liquidity pool
+    pool = await create_liquidity_pool()
+
+    # Execute a token swap
+    await swap_tokens(pool['poolId'], 'AGX', 100, 49.5)
+
+    # Run complete DeFi workflow
+    await complete_defi_workflow()
+
+asyncio.run(main())
 ```
+
+### 🎯 Quick Example: DeFi Swap
+
+```python
+import os
+import asyncio
+from agxcl_sdk import AgefixClient, AgefixConfig
+
+client = AgefixClient(AgefixConfig(
+    api_url='https://api.agefix.com',
+    api_key=os.environ.get('AGEFIX_API_KEY'),
+    wallet_address=os.environ.get('WALLET_ADDRESS'),
+    private_key=os.environ.get('PRIVATE_KEY')
+))
+
+async def swap_example():
+    # Get swap quote
+    quote = await client.defi.get_swap_quote({
+        'poolId': 'pool_123',
+        'tokenIn': 'AGX',
+        'amountIn': 100
+    })
+
+    print(f'You will receive: {quote["amountOut"]} CURE')
+
+    # Execute swap with slippage protection
+    result = await client.defi.swap({
+        'poolId': 'pool_123',
+        'tokenIn': 'AGX',
+        'amountIn': 100,
+        'minAmountOut': quote['amountOut'] * 0.99  # 1% slippage
+    })
+
+    print(f'Swap completed! {result["txHash"]}')
+
+asyncio.run(swap_example())
+```
+
+### 🎮 Quick Example: Gaming Session
+
+```python
+async def gaming_example():
+    # Register a game
+    game = await client.gaming.register_game({
+        'gameName': 'AgeFix Quest',
+        'gameType': 'adventure',
+        'entryFeeAgx': 10,
+        'rewardPoolAgx': 1000
+    })
+
+    # Start game session
+    session = await client.gaming.start_session({
+        'gameId': game['gameId'],
+        'difficulty': 'hard'
+    })
+
+    # Submit score with achievements
+    result = await client.gaming.submit_score({
+        'sessionId': session['sessionId'],
+        'score': 9500,
+        'achievementIds': ['first_win', 'speed_runner']
+    })
+
+    print(f'Earned: {result["rewardsEarned"]} AGX')
+
+asyncio.run(gaming_example())
+```
+
+For more detailed examples, see the individual example files in the `examples/` directory.
 
 ## Error Handling
 
